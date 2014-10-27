@@ -14,6 +14,7 @@ exports.getCourses = function (req, res) {
 };
 
 exports.postCourse = function (req, res) {
+    console.log("chiama a post course" + req.body);
     var course = new Course(req.body);
     course.save(function (err) {
         if (err) {

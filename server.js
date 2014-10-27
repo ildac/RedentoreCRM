@@ -5,13 +5,14 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var configDebug = require('./config-debug');
 
 // load the routes
 var defaultRoutes = require('./routes/index');
 var courseRoutes = require('./routes/course');
 
-// server config TODO spostami in config file
-mongoose.connect('mongodb://localhost:27017/redentoreCRM');
+// server config
+mongoose.connect(configDebug.db.mongodb);
 
 var app = express();
 
