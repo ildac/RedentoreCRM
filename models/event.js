@@ -2,8 +2,12 @@
  * Created by Dac on 19/10/14.
  */
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var UserEnrollment = require('./userEnrollment');
 
-var EventsSchema = new mongoose.Schema({
+var Course = require('./User');
+
+var EventsSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -22,23 +26,13 @@ var EventsSchema = new mongoose.Schema({
     },
     endingDate: Date,
     endingTime: Date,
-    openTo: {
-        type: Schema.types.objectId, //--> reference to the Course if null it's global
+    openTo: [{
+        type: Schema.types.objectId,
+        ref: Course,
         default: null
-    },
+    }],
     price: Number,
-    registeredUsers: {
-        userCardNumber: Schema.types.objectId,
-        date: {
-            type: Date,
-            default: Date.now,
-            required: true
-        },
-        status: {
-            type: String,
-            default: "confirmed"
-        }
-    }
+    registeredUsers: [UserEnrollment.schema]
 });
 
 module.exports = mongoose.model('Event', EventsSchema);

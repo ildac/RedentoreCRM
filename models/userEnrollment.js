@@ -6,11 +6,11 @@ var Schema = mongoose.Schema;
 
 var User = require('./user');
 
-var CourseEditionEnrolledUserSchema = Schema({
+var UserEnrollmentSchema = Schema({
     enrollmentData: Date,
     userCardNumber: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        type: Schema.Types.ObjectId, //TODO check type!
+        ref: User
     },
     confirmed: {
         type: Boolean,
@@ -18,4 +18,4 @@ var CourseEditionEnrolledUserSchema = Schema({
     }
 });
 
-module.exports = mongoose.model('CourseEditionEnrolledUser', CourseEditionEnrolledUserSchema);
+module.exports = mongoose.model('UserEnrollment', UserEnrollmentSchema);

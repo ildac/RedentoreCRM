@@ -5,7 +5,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var CourseEditionEnrolledUser = require('./courseEditionEnrolledUser');
+var UserEnrollment = require('./userEnrollment');
 
 var CourseEditionSchema = Schema({
     year: Date,
@@ -17,7 +17,7 @@ var CourseEditionSchema = Schema({
         type: Date,
         required: true
     },
-    enrolledUsers: [CourseEditionEnrolledUser.schema]
+    enrolledUsers: [UserEnrollment.schema]
 });
 
 module.exports = mongoose.model('CourseEdition', CourseEditionSchema);
