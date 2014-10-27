@@ -13,8 +13,8 @@ exports.getCourses = function (req, res) {
     })
 };
 
+//TODO send status 400 if the name of the inserted document is already there.
 exports.postCourse = function (req, res) {
-    console.log("chiama a post course" + req.body);
     var course = new Course(req.body);
     course.save(function (err) {
         if (err) {
@@ -38,11 +38,11 @@ exports.getCourse = function(req, res) {
 
 exports.putCourse = function (req, res) {
     Course.findOneAndUpdate({ _id: req.params.courseId }, req.body,
-        function (err) {
+        function (err, course) {
             if(err) {
                 res.send(err);
             }
-            res.json({message: 'updated'});
+            res.json({message: 'updated', data: course});
         }
     );
 };
@@ -50,12 +50,11 @@ exports.putCourse = function (req, res) {
 
 exports.deleteCourse = function (req, res) {
     Course.findByIdAndRemove( req.params.courseId,
-        function (err) {
+        function (err, removed) {
             if (err) {
                 res.send(err);
             }
-
-            res.json({ message: 'Course removed from the database' });
+            res.json({ message: 'deleted', data: removed });
         }
     );
 };
