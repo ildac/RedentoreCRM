@@ -24,4 +24,9 @@ router.route('/courses/:courseId/editions')
     .get(editionController.getEditions)
     .post(editionController.postEdition);
 
+router.route('/courses/:courseId/editions/:editionId')
+    .get(editionController.getEdition)
+    .put(editionController.putEdition)
+    .delete(editionController.deleteEdition);
+
 module.exports = router;
