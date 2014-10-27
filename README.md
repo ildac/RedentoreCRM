@@ -4,5 +4,8 @@ redentoreCRM
 A simple Customer Registration Manager system for a local organization.
 It is a node.js + express + mongoDB restful API.
 
-A project I'm using to learn more about nodeJS.
-
+Unit test is done with Mocha (plus should and supertest) to execute the test
+just do
+```
+npm test
+```
