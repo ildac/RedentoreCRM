@@ -5,11 +5,10 @@
 var Course = require('../models/course');
 var CourseEdition = require('../models/courseEdition');
 
-//TODO make function private
 function selectCourse(courseId, callback) {
     Course.findById(courseId, function (err, course) {
         if (err) {
-            throw err; //TODO error managment strategy needed
+            throw err;
         }
 
         callback(course);
@@ -17,7 +16,7 @@ function selectCourse(courseId, callback) {
 }
 
 exports.getEditions = function (req, res) {
-    try {   //TODO check syntax of try catch in Javascript
+    try {
         selectCourse(req.params.courseId, function (course) {
             res.json(course.editions);
         });
@@ -27,16 +26,16 @@ exports.getEditions = function (req, res) {
 };
 
 exports.postEdition = function (req, res) {
-    try {   //TODO check syntax of try catch in Javascript
+    try {
         selectCourse(req.params.courseId, function (course) {
-            var edition = new CourseEdition(req.body)
-            course.editions.push(edition);
-            course.save(function (err) {
+            var newEdition = new CourseEdition(req.body)
+            course.editions.push(newEdition);
+            course.save(function (err, savedCourse) {
                 if (err) {
                     res.send(err);
                 }
 
-                res.json({message: 'Edition saved in course ' + course.name});
+                res.json({message: 'saved', data: savedCourse});
             });
         });
     } catch (err) {
@@ -45,7 +44,7 @@ exports.postEdition = function (req, res) {
 };
 
 exports.getEdition = function (req, res) {
-    try {   //TODO check syntax of try catch in Javascript
+    try {
         selectCourse(req.params.courseId, function (course) {
             course.editions.findById(req.params.editionId, function (err, edition) {
                 if (err) {
@@ -61,31 +60,31 @@ exports.getEdition = function (req, res) {
 };
 
 exports.putEdition = function (req, res) {
-    try {   //TODO check syntax of try catch in Javascript
-        selectCourse(req.params.courseId, function (course) {
-            course.editions.findOneAndUpdate(req.params.editionId, req.body, function (err) {
-                if (err) {
-                    res.send(err);
-                }
+    Course.update({ 'editions._id': req.params.editionId, '_id': req.params.courseId },
+        { $set: {
+            'editions.$.year': req.body.year,
+            'editions.$.startingDate': req.body.startingDate,
+            'editions.$.endingDate': req.body.endingDate
+        }}, function(err, numberOfUpdatedDocs) {
+            if (err) {
+                res.send(err);
+            }
 
-                res.json({message: 'edition updated'});
+            res.json({message: 'updated', numberOfUpdatedDocs: numberOfUpdatedDocs});
 
-            });
         });
-    } catch (err) {
-        res.send(err);
-    };
 };
 
 exports.deleteEdition = function (req, res) {
-    try {   //TODO check syntax of try catch in Javascript
+    try {
         selectCourse(req.params.courseId, function (course) {
-            course.editions.findByIdAndRemove(req.params.editionId, function (err) {
+            course.editions.pull(req.params.editionId)
+            course.save(function (err){
                 if (err) {
                     res.send(err);
                 }
 
-                res.json({message: 'edition removed'});
+                res.json({message: 'deleted'});
 
             });
         });

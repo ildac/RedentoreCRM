@@ -36,7 +36,7 @@ describe('Routing for Course resource', function () {
             });
     });
 
-    //TODO fix me
+    //TODO fix duplicated value
     xit('should return an error if it is a duplicate course name', function (done) {
         var course = {
             name: 'MochaTest',
@@ -101,5 +101,10 @@ describe('Routing for Course resource', function () {
                     done();
                 });
         });
+    });
+
+    after(function (done) {
+        mongoose.disconnect();
+        done();
     });
 });

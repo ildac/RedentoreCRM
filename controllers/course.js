@@ -15,7 +15,7 @@ exports.getCourses = function (req, res) {
 
 //TODO send status 400 if the name of the inserted document is already there.
 exports.postCourse = function (req, res) {
-    var course = new Course(req.body);
+    var course = new Course(req.body)
     course.save(function (err) {
         if (err) {
             res.send(err);

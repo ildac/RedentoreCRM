@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var UserEnrollment = require('./userEnrollment');
 
 var CourseEditionSchema = Schema({
-    year: Date,
+    year: String,
     startingDate: {
         type: Date,
         required: true
