@@ -77,7 +77,7 @@ var UserSchema = new mongoose.Schema({
         type: String,
         default: "user"
     },
-    picture: String, // TODO come funziona GridFS??
+    picture: String // TODO come funziona GridFS??
 
     // questa è una funzione avanzata...il genitore potrebbe gestire anche gli
     // account dei figli da qui, una volta appurata la loro relazione
