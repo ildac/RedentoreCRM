@@ -32,7 +32,7 @@ describe('Routing for Edition resource', function () {
             endingDate: "2015-06-30T00:00:00.000Z"
         };
 
-        Course.findById('545a1fbe28e97f737725a8ec', function (err, course) {
+        Course.findById('545a2a5f46cbe49c84aed98d', function (err, course) {
             if (err) {
                 throw err;
             }
@@ -58,8 +58,17 @@ describe('Routing for Edition resource', function () {
         });
     });
 
-    xit('should retrieve a specific course edition', function (done) {
-
+    it('should retrieve a specific course edition', function (done) {
+        request(url)
+            .get('/courses/' + courseId + '/editions/' + editionId)
+            .send()
+            .end(function (err, res) {
+                if(err) {
+                    throw err;
+                }
+                res.body._id.should.equal(editionId.toString());
+                done();
+            });
     });
 
     it('should update a certain edition', function (done) {
@@ -96,7 +105,6 @@ describe('Routing for Edition resource', function () {
         });
     });
 
-    //TODO test for getall
     //TODO test for get specific
 
 

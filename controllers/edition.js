@@ -46,17 +46,19 @@ exports.postEdition = function (req, res) {
 exports.getEdition = function (req, res) {
     try {
         selectCourse(req.params.courseId, function (course) {
-            course.editions.findById(req.params.editionId, function (err, edition) {
-                if (err) {
-                    res.send(err);
-                }
-
-                res.json(edition);
+            var edition = course.editions.filter( function(ed) {
+                return ed._id.toString() === req.params.editionId.toString();
             });
-        });
+                if (edition.length === 1) {
+                    res.json(edition[0]);
+                } else {
+                    res.json({message: 'not found'});
+                    //TODO send 404
+                }
+            });
     } catch (err) {
         res.send(err);
-    }
+    };
 };
 
 exports.putEdition = function (req, res) {
