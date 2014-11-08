@@ -5,12 +5,6 @@ var router = require('express').Router();
 var courseController = require('../controllers/course');
 var editionController = require('../controllers/edition');
 
-// whih route we have to put on...
-// INSERT
-// DELETE
-// UPDATE
-// GET
-
 router.route('/courses')
     .get(courseController.getCourses)
     .post(courseController.postCourse);

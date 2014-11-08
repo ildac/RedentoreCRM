@@ -3,9 +3,15 @@
  */
 
 var router = require('express').Router();
+var userController = require('./controllers/user');
 
-router.get('/users', function defaultRoute(req, res) {
-    res.json({message: "Welcome to new Redentore CRM"});
-});
+router.route('/users')
+    .get(userController.getUsers)
+    .post(userController.addUser);
+
+router.route('/users/:userId')
+    .get(userController.getUser)
+    .put(userController.putUser)
+    .delete(userController.deleteUser);
 
 module.exports = router;

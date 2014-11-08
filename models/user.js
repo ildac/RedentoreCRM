@@ -24,21 +24,21 @@ var UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    personalData: [{
+    personalData: {
         name: String,
         surname: String,
         dateOfBirth: Date,
         cityOfBirth: String,
         provinceOfBirth: String,
-        address: [{
+        address: {
             street: String,
             number: String,
             city: String,
             province: String,
             CAP: String
-        }],
+        },
         baptizedInParish: String
-    }],
+    },
     phones: [{
         number: {
             type: String,
@@ -49,12 +49,12 @@ var UserSchema = new mongoose.Schema({
             required: true
         }
     }],
-    scuola: [{
+    scuola: {
         year: Date,
         name: String,
         class: String,
         section: String
-    }],
+    },
     status: [{
         name: {
             type: String,
@@ -66,13 +66,13 @@ var UserSchema = new mongoose.Schema({
             default: Date.now
         }
     }],
-    note: [{
+    note: {
         text: String,
         date: {
             type: Date,
             default: Date.now
         }
-    }],
+    },
     ruolo: {
         type: String,
         default: "user"
