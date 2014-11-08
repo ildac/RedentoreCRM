@@ -32,7 +32,7 @@ var EventsSchema = new Schema({
         default: null
     }],
     price: Number,
-    registeredUsers: [UserEnrollment.schema]
+    enrolledUsers: [UserEnrollment.schema]
 });
 
 module.exports = mongoose.model('Event', EventsSchema);
