@@ -26,11 +26,9 @@ router.route('/:courseId/editions/:editionId')
 router.route('/:courseId/editions/:editionId/registrants')
     .get(editionController.getRegistrants);
 
-
 router.route('courses/:courseId/editions/:editionId/registrants/:userId')
     .get(editionController.getRegistrant)
     .post(editionController.postRegistrant)
     .delete(editionController.deleteRegistrant);
-
 
 module.exports = router;
