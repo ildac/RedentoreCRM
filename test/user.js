@@ -89,6 +89,7 @@ describe('Routing for User resource', function () {
 
     it('should update a given user', function (done) {
         var updatedUser = {
+            _id: userId,
             emails: [
                 {
                     email: 'anne@bob.fake'
