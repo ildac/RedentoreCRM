@@ -94,3 +94,19 @@ exports.deleteEdition = function (req, res) {
         res.send(err);
     };
 };
+
+exports.getRegistrants = function (req, res) {
+
+};
+
+exports.getRegistrant = function (req, res) {
+
+};
+
+exports.postRegistrant = function (req, res) {
+
+};
+
+exports.deleteRegistrant = function (req, res) {
+
+};
