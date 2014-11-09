@@ -5,20 +5,20 @@ var router = require('express').Router();
 var courseController = require('../controllers/course');
 var editionController = require('../controllers/edition');
 
-router.route('/courses')
+router.route('/')
     .get(courseController.getCourses)
     .post(courseController.postCourse);
 
-router.route('/courses/:courseId')
+router.route('/:courseId')
     .get(courseController.getCourse)
     .put(courseController.putCourse)
     .delete(courseController.deleteCourse);
 
-router.route('/courses/:courseId/editions')
+router.route('/:courseId/editions')
     .get(editionController.getEditions)
     .post(editionController.postEdition);
 
-router.route('/courses/:courseId/editions/:editionId')
+router.route('/:courseId/editions/:editionId')
     .get(editionController.getEdition)
     .put(editionController.putEdition)
     .delete(editionController.deleteEdition);

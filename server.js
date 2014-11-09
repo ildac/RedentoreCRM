@@ -8,8 +8,9 @@ var bodyParser = require('body-parser');
 var configDebug = require('./config-debug');
 
 // load the routes
-var defaultRoutes = require('./routes/index');
+var indexRoutes = require('./routes/index');
 var courseRoutes = require('./routes/course');
+var userRoutes = require('./routes/user');
 
 // server config
 mongoose.connect(configDebug.db.mongodb);
@@ -23,8 +24,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var port = process.env.PORT || 8000;
 
 // register the routes
-app.use('/api/v1', defaultRoutes);
-app.use('/api/v1', courseRoutes);
+app.use('/api/v1', indexRoutes);
+app.use('/api/v1/courses', courseRoutes);
+app.use('/api/v1/users', userRoutes);
 
 // run the server
 app.listen(port);
