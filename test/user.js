@@ -23,9 +23,10 @@ describe('Routing for User resource', function () {
 
     it('should insert a new user ', function (done) {
         var user = {
-            emails: [{
+            cardNumber: '00000001',
+            emails: {
                 email: 'anne@bob.fake'
-            }],
+            },
             password: 'test',
             personalData: {
                 name: 'Anne',
@@ -67,9 +68,14 @@ describe('Routing for User resource', function () {
                     throw err;
                 }
                 res.should.have.status(200); //Make it return the saved data?
-                User.findOne({'personalData.name': 'Anne', 'personalData.surname': 'Bob'}, function(err, user) {
+
+                User.findOne({
+                    'personalData.name': 'Anne',
+                    'personalData.surname': 'Bob'
+                }, function (err, user) {
                     userId = user._id;
                 });
+
                 done();
             });
     });
@@ -79,7 +85,7 @@ describe('Routing for User resource', function () {
             .get('/users/' + userId)
             .send()
             .end(function (err, res) {
-                if(err) {
+                if (err) {
                     throw err;
                 }
                 res.body._id.should.equal(userId.toString());
@@ -95,7 +101,7 @@ describe('Routing for User resource', function () {
                     email: 'anne@bob.fake'
                 },
                 {
-                    email:'bob@charlie.fake'    // -- Changed
+                    email: 'bob@charlie.fake'    // -- Changed
                 }
             ],
             password: 'test',
@@ -136,49 +142,43 @@ describe('Routing for User resource', function () {
             }
         };
 
-        User.findOne({'personalData.name': 'Anne', 'personalData.surname': 'Bob'}, function(err, user) {
-            if (err) {
-                console.log(error);
-                throw err;
-            }
-
-            request(url)
-                .put('/users/' + user._id )
-                .send(updatedUser)
-                .end(function(err, res){
-                    if(err) {
-                        throw err;
-                    }
-                    res.body.message.should.equal('updated');
-                    res.body.data.should.have.property('_id');
-                    res.body.data.emails[1].email.should.equal(updatedUser.emails[1].email);
-                    res.body.data.personalData.dateOfBirth.should.equal(updatedUser.personalData.dateOfBirth);
-                    res.body.data.personalData.address.number.should.equal(updatedUser.personalData.address.number);
-                    res.body.data.personalData.baptizedInParish.should.equal(updatedUser.personalData.baptizedInParish);
-                    res.body.data.personalData.phones[2].number.should.equal(updatedUser.personalData.phones[1].number);
-                    done();
-                });
-        });
+        request(url)
+            .put('/users/' + userId)
+            .send(updatedUser)
+            .end(function (err, res) {
+                if (err) {
+                    throw err;
+                }
+                res.body.message.should.equal('updated');
+                res.body.data.should.have.property('_id');
+                res.body.data.emails[1].email.should.equal(updatedUser.emails[1].email);
+                res.body.data.personalData.dateOfBirth.should.equal(updatedUser.personalData.dateOfBirth.toISOString());
+                res.body.data.personalData.address.number.should.equal(updatedUser.personalData.address.number);
+                res.body.data.personalData.baptizedInParish.should.equal(updatedUser.personalData.baptizedInParish);
+                res.body.data.phones[1].number.should.equal(updatedUser.phones[1].number);
+                done();
+            });
     });
 
     it('should delete a specific user', function (done) {
-        User.findOne({'personalData.name': 'Anne', 'personalData.surname': 'Bob'}, function(err, user) {
-            if (err) {
-                throw err;
-            }
+        request(url)
+            .delete('/users/' + userId)
+            .send()
+            .end(function (err, res) {
+                if (err) {
+                    throw err;
+                }
+                res.body.message.should.equal('deleted');
+                res.body.data._id.should.equal(userId.toString());
+                res.body.data.personalData.name.should.equal('Anne');
+                done();
+            });
+    });
 
-            request(url)
-                .delete('/users/' + user._id)
-                .send()
-                .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
-                    res.body.message.should.equal('deleted');
-                    res.body.data._id.should.equal(user._id.toString());
-                    res.body.data.name.should.equal('Anne');
-                    done();
-                });
-        });
+
+    after(function (done) {
+        mongoose.disconnect();
+        done();
     });
 });
+

@@ -3,11 +3,11 @@
  */
 
 var router = require('express').Router();
-var userController = require('./controllers/user');
+var userController = require('../controllers/user');
 
 router.route('/')
     .get(userController.getUsers)
-    .post(userController.addUser);
+    .post(userController.postUser);
 
 router.route('/:userId')
     .get(userController.getUser)

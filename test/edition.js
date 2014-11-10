@@ -6,7 +6,6 @@ var should = require('should-http');
 var assert = require('assert');
 var request = require('supertest');
 var mongoose = require('mongoose');
-var moment = require('moment');
 
 var config = require('../config-debug');
 
@@ -32,7 +31,7 @@ describe('Routing for Edition resource', function () {
             endingDate: "2015-06-30T00:00:00.000Z"
         };
 
-        Course.findById('545a2a5f46cbe49c84aed98d', function (err, course) {
+        Course.findOne({'name': 'MochaTest'}, function (err, course) {
             if (err) {
                 throw err;
             }
@@ -107,5 +106,9 @@ describe('Routing for Edition resource', function () {
 
     //TODO test for get specific
 
+    after(function (done) {
+        mongoose.disconnect();
+        done();
+    });
 
 });

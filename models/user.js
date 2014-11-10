@@ -5,7 +5,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var UserSchema = new mongoose.Schema({
+var UserSchema = new Schema({
     cardNumber: {
         type: String,
         required: true

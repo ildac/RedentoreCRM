@@ -2,7 +2,7 @@
  * Created by Dac on 25/10/14.
  */
 
-var User = require('./models/user');
+var User = require('../models/user');
 
 exports.getUsers = function (req, res) {
     User.find(function (err, users) {
@@ -26,13 +26,13 @@ exports.getUser = function (req, res) {
 };
 
 exports.postUser = function (req, res) {
-    var user = new user(req.body)
-    user.save(function (err) {
+    var user = new User(req.body)
+    user.save(function (err, result) {
         if (err) {
             res.send(err);
         }
 
-        res.json({message: 'Saved', data: user});
+        res.json({message: 'saved', data: result});
     });
 };
 
