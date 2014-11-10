@@ -3,7 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var UserEnrollment = require('./userEnrollment');
+var UserEnrollment = require('./registrant');
 
 var Course = require('./User');
 

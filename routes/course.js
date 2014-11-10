@@ -4,6 +4,7 @@
 var router = require('express').Router();
 var courseController = require('../controllers/course');
 var editionController = require('../controllers/edition');
+var registrantController = require('../controllers/registrant');
 
 router.route('/')
     .get(courseController.getCourses)
@@ -24,11 +25,12 @@ router.route('/:courseId/editions/:editionId')
     .delete(editionController.deleteEdition);
 
 router.route('/:courseId/editions/:editionId/registrants')
-    .get(editionController.getRegistrants);
+    .get(registrantController.getRegistrants);
 
 router.route('courses/:courseId/editions/:editionId/registrants/:userId')
-    .get(editionController.getRegistrant)
-    .post(editionController.postRegistrant)
-    .delete(editionController.deleteRegistrant);
+    .get(registrantController.getRegistrant)
+    .post(registrantController.postRegistrant)
+    .put(registrantController.putRegistrant)
+    .delete(registrantController.deleteRegistrant);
 
 module.exports = router;
