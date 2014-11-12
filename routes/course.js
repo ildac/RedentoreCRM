@@ -6,6 +6,7 @@ var courseController = require('../controllers/course');
 var editionController = require('../controllers/edition');
 var registrantController = require('../controllers/registrant');
 
+// Courses
 router.route('/')
     .get(courseController.getCourses)
     .post(courseController.postCourse);
@@ -15,6 +16,7 @@ router.route('/:courseId')
     .put(courseController.putCourse)
     .delete(courseController.deleteCourse);
 
+// Editions
 router.route('/:courseId/editions')
     .get(editionController.getEditions)
     .post(editionController.postEdition);
@@ -24,12 +26,13 @@ router.route('/:courseId/editions/:editionId')
     .put(editionController.putEdition)
     .delete(editionController.deleteEdition);
 
+// Registrants
 router.route('/:courseId/editions/:editionId/registrants')
-    .get(registrantController.getRegistrants);
+    .get(registrantController.getRegistrants)
+    .post(registrantController.postRegistrant);
 
 router.route('courses/:courseId/editions/:editionId/registrants/:userId')
     .get(registrantController.getRegistrant)
-    .post(registrantController.postRegistrant)
     .put(registrantController.putRegistrant)
     .delete(registrantController.deleteRegistrant);
 
