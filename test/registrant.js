@@ -33,7 +33,7 @@ describe('Routing for course edition registration', function () {
         //  - get all the IDs
 
         var userVal = {
-            cardNumber: '00000001',
+            cardNumber: '00000002',
             emails: {
                 email: 'anne@bob.fake'
             },
@@ -41,7 +41,7 @@ describe('Routing for course edition registration', function () {
             personalData: {
                 name: 'Anne',
                 surname: 'Bob',
-                dateOfBirth: new Date('1980', '2', '20'),
+                dateOfBirth: new Date().toISOString(),
                 cityOfBirth: 'Paris',
                 provinceOfBirth: 'Paris',
                 address: {
@@ -69,7 +69,7 @@ describe('Routing for course edition registration', function () {
             }
         };
         var courseVal = {
-            name: 'MochaTest',
+            name: 'Test Edition',
             description: 'mochaTest Course!'
         };
         var editionVal = {
@@ -83,11 +83,19 @@ describe('Routing for course edition registration', function () {
         var edition = new Edition(editionVal);
 
         user.save(function (err, savedUser) {
+            if(err) {
+                throw err;
+            }
+
             userId = savedUser._id;
         });
 
         course.editions.push(edition);
         course.save(function (err, savedCourse) {
+            if (err) {
+                throw err;
+            }
+
             courseId = savedCourse._id;
             editionId = savedCourse.editions._id;
         });
@@ -111,7 +119,7 @@ describe('Routing for course edition registration', function () {
             })
     });
 
-    it('should return "true" if the user is registered "false" otherwise', function (done) {
+    xit('should return "true" if the user is registered "false" otherwise', function (done) {
         request(url)
             .get(basePath + userId)
             .end(function (err, res) {
@@ -125,7 +133,7 @@ describe('Routing for course edition registration', function () {
             });
     });
 
-    it('should return the list of all the user registered', function (done) {
+    xit('should return the list of all the user registered', function (done) {
         request(url)
             .get(basePath)
             .end(function (err, res) {
@@ -139,9 +147,10 @@ describe('Routing for course edition registration', function () {
             });
     });
 
-    it('should change the status of the registration to confirmed', function (done) {
+    xit('should change the status of the registration to confirmed', function (done) {
         request(url)
             .put(basePath + userId)
+            .send({confirmed: true})
             .end(function (err, res) {
                 if(err) {
                     throw err;
@@ -153,7 +162,7 @@ describe('Routing for course edition registration', function () {
             });
     });
 
-    it('should delete the user registration', function (done) {
+    xit('should delete the user registration', function (done) {
         request(url)
             .delete(basePath + userId)
             .end(function(err, res) {

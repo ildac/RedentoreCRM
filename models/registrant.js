@@ -8,10 +8,11 @@ var User = require('./user');
 
 var UserEnrollmentSchema = Schema({
     enrollmentData: Date,
-    userCardNumber: {
+    userId: {
         type: Schema.Types.ObjectId, //TODO check type!
         ref: User
     },
+    userCardNumber: String,
     confirmed: {
         type: Boolean,
         default: false
