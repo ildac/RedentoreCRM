@@ -32,14 +32,14 @@ function selectEdition(req, callback) {
 
 };
 
-function findRegistrant(registrants, userId) {
+function findEnrolledUser(registrants, userId) {
     return registrants.filter(function (reg) {
         return reg.userId.toString() === userId.toString();
     });
 }
 
 function isRegistered(edition, userId) {
-    var findUser = findRegistrant(edition.enrolledUsers, userId);
+    var findUser = findEnrolledUser(edition.enrolledUsers, userId);
 
     return (findUser.length > 0)? true : false;
 }
@@ -110,7 +110,7 @@ exports.deleteRegistrant = function (req, res) {
             throw err;
         }
 
-        var enrolledUser = findRegistrant(edition.enrolledUsers, req.params.userId);
+        var enrolledUser = findEnrolledUser(edition.enrolledUsers, req.params.userId);
 
         edition.enrolledUsers.pull(enrolledUser[0]._id);
 
@@ -136,6 +136,26 @@ exports.putRegistrant = function (req, res) {
         if (err) {
             throw err;
         }
+
+        var enrolledUser = findEnrolledUser(edition.enrolledUsers, req.params.userId)[0];
+
+        enrolledUser.confirmed = req.body.confirmed;
+
+        var course = enrolledUser.ownerDocument();
+
+        course.save(function (err, savedCourse) {
+            if (err) {
+                res.send(err);
+            }
+
+            selectEdition(req, function (err, savedEdition) {
+                if(err) {
+                    res.send(err);
+                }
+
+                res.send({'data': savedEdition});
+            });
+        });
 
     });
 };

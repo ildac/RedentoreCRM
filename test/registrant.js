@@ -147,7 +147,7 @@ describe('Routing for course edition registration', function () {
             });
     });
 
-    xit('should change the status of the registration to confirmed', function (done) {
+    it('should change the status of the registration to confirmed', function (done) {
         request(url)
             .put(basePath + userId)
             .send({confirmed: true})
@@ -156,7 +156,7 @@ describe('Routing for course edition registration', function () {
                     throw err;
                 }
 
-                res.body.data.registrant.confirmed.should.equal(true);
+                res.body.data.enrolledUsers[0].confirmed.should.equal(true);
 
                 done();
             });
