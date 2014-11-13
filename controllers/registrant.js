@@ -5,14 +5,13 @@
 var Course = require('../models/course');
 var Edition = require('../models/courseEdition');
 var Registrant = require('../models/registrant');
+var User = require('../models/user');
 
 function selectEdition(req, callback) {
     // not so good, but it's fast to implement
     var edition = [];
     var courseId = req.params.courseId;
     var editionId = req.params.editionId;
-
-    console.log(courseId);
 
     Course.findById(courseId, function (err, course) {
         if (err) {
@@ -22,14 +21,15 @@ function selectEdition(req, callback) {
         edition = course.editions.filter( function(ed) {
             return ed._id.toString() === editionId.toString();
         });
+
+        if (edition.length === 0) {
+            var err = "No edition found for courseId: " + courseId; //TODO implement a smart error manager
+        }
+
+        //TODO error check here, if there is no edition...what?!
+        callback(err, edition[0]);
     });
 
-    if (edition.length === 0) {
-        var err = "No edition found for courseId: " + courseId; //TODO implement a smart error manager
-    }
-
-    //TODO error check here, if there is no edition...what?!
-    callback(err, edition);
 };
 
 function findRegistrant(registrants, userId) {
@@ -39,7 +39,7 @@ function findRegistrant(registrants, userId) {
 }
 
 function isRegistered(edition, userId) {
-    var findUser = findRegistrant(edition.registrants, userId);
+    var findUser = findRegistrant(edition.enrolledUsers, userId);
 
     return (findUser.length > 0)? true : false;
 }
@@ -51,7 +51,7 @@ exports.getRegistrants = function (req, res) {
             res.send(err);
         }
 
-        res.send(edition[0].registrants);
+        res.send(edition[0].enrolledUsers);
 
     });
 };
@@ -84,14 +84,20 @@ exports.postRegistrant = function (req, res) {
                 userCardNumber: user.cardNumber
             });
 
-            edition.registrants.push(registrant);
-            edition.save(function (err, edition) {
+            edition.enrolledUsers.push(registrant);
+            var course = edition.ownerDocument();
+            course.save(function (err, savedCourse) {
                 if (err) {
                     res.send(err);
                 }
+                savedEdition = selectEdition(req, function (err, savedEdition) {
+                    if(err) {
+                        res.send(err);
+                    }
 
-                res.send(edition.registrants);
+                    res.send(savedEdition.enrolledUsers);
 
+                });
             });
         });
     });
@@ -103,15 +109,15 @@ exports.deleteRegistrant = function (req, res) {
         if(err) {
             throw err;
         }
-        var registrant = findRegistrant(edition.registrants, req.params.userId);
+        var enrolledUser = findRegistrant(edition.enrolledUsers, req.params.userId);
 
-        edition.registrants.pull(registrant._id);
+        edition.enrolledUsers.pull(enrolledUser._id);
         edition.save(function (err, edition) {
             if (err) {
                 res.send(err);
             }
 
-            res.send(edition.registrants);
+            res.send(edition.enrolledUsers);
         });
     });
 };

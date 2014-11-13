@@ -88,21 +88,22 @@ describe('Routing for course edition registration', function () {
             }
 
             userId = savedUser._id;
+
+            course.editions.push(edition);
+            course.save(function (err, savedCourse) {
+                if (err) {
+                    throw err;
+                }
+
+                courseId = savedCourse._id;
+                editionId = savedCourse.editions[0]._id;
+
+                basePath = '/courses/' + courseId + '/editions/' + editionId + '/registrants/';
+
+                done();
+
+            });
         });
-
-        course.editions.push(edition);
-        course.save(function (err, savedCourse) {
-            if (err) {
-                throw err;
-            }
-
-            courseId = savedCourse._id;
-            editionId = savedCourse.editions._id;
-        });
-
-        basePath = '/courses/' + courseId + '/editions/' + editionId + '/registrants/';
-
-        done();
     });
 
     it('should register the user', function (done) {
