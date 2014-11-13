@@ -120,7 +120,7 @@ describe('Routing for course edition registration', function () {
             })
     });
 
-    xit('should return "true" if the user is registered "false" otherwise', function (done) {
+    it('should return "true" if the user is registered "false" otherwise', function (done) {
         request(url)
             .get(basePath + userId)
             .end(function (err, res) {
@@ -128,13 +128,13 @@ describe('Routing for course edition registration', function () {
                     throw err;
                 }
 
-                res.body.message.should.equal('true');
+                res.body.message.should.equal(true);
 
                 done();
             });
     });
 
-    xit('should return the list of all the user registered', function (done) {
+    it('should return the list of all the user registered', function (done) {
         request(url)
             .get(basePath)
             .end(function (err, res) {
@@ -142,8 +142,7 @@ describe('Routing for course edition registration', function () {
                     throw err;
                 }
 
-                res.body.data.registrants[0].userId.should.equal(userId.toString());
-                res.body.data.number.should.equal('1');
+                res.body.count.should.equal(1);
                 done()
             });
     });
@@ -163,7 +162,7 @@ describe('Routing for course edition registration', function () {
             });
     });
 
-    xit('should delete the user registration', function (done) {
+    it('should delete the user registration', function (done) {
         request(url)
             .delete(basePath + userId)
             .end(function(err, res) {

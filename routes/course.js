@@ -31,7 +31,7 @@ router.route('/:courseId/editions/:editionId/registrants')
     .get(registrantController.getRegistrants)
     .post(registrantController.postRegistrant);
 
-router.route('courses/:courseId/editions/:editionId/registrants/:userId')
+router.route('/:courseId/editions/:editionId/registrants/:userId')
     .get(registrantController.getRegistrant)
     .put(registrantController.putRegistrant)
     .delete(registrantController.deleteRegistrant);

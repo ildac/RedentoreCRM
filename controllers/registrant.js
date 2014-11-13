@@ -51,7 +51,7 @@ exports.getRegistrants = function (req, res) {
             res.send(err);
         }
 
-        res.send(edition[0].enrolledUsers);
+        res.send({count: edition.enrolledUsers.length, data: edition.enrolledUsers});
 
     });
 };
@@ -109,15 +109,24 @@ exports.deleteRegistrant = function (req, res) {
         if(err) {
             throw err;
         }
+
         var enrolledUser = findRegistrant(edition.enrolledUsers, req.params.userId);
 
-        edition.enrolledUsers.pull(enrolledUser._id);
-        edition.save(function (err, edition) {
+        edition.enrolledUsers.pull(enrolledUser[0]._id);
+
+        var course = edition.ownerDocument();
+        course.save(function (err, savedCourse) {
             if (err) {
                 res.send(err);
             }
 
-            res.send(edition.enrolledUsers);
+            selectEdition(req, function (err, savedEdition) {
+                if(err) {
+                    res.send(err);
+                }
+
+                res.send(savedEdition.enrolledUsers);
+            });
         });
     });
 };
