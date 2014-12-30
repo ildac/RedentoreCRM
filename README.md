@@ -9,3 +9,5 @@ just do
 ```
 npm test
 ```
+
+NB. discontinued project
